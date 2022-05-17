@@ -27,5 +27,6 @@ module.exports = {
     'react/function-component-definition': 'off',
     'no-plusplus': 'off',
     'lines-between-class-members': 'off',
+    'no-unused-expressions': 'off',
   },
 };

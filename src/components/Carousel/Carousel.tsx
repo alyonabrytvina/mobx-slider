@@ -1,45 +1,93 @@
-import React, {
-  Children, cloneElement, useEffect, useState,
-} from 'react';
-import { Box } from '@mui/material';
-import { fetchData } from '../../api/fetchData';
-import './Carousel.css';
+import React, { useEffect, useState } from 'react';
+import { Box, Card, IconButton } from '@mui/material';
+import './Carousel.scss';
+import { observer } from 'mobx-react';
+import { useTransition, animated } from 'react-spring';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { store } from '../../store/store';
+import Count from '../Count/Count';
+import { Buttons } from '../Buttons/Buttons';
 
-export const Carousel: React.FC = () => {
-  const [data, setData] = useState<string[]>([]);
-  const [pages, setPages] = useState<string[]>([]);
+const Carousel: React.FC = () => {
+  const [index, setIndex] = useState<number>(0);
+  const { imagesArr } = store;
+
+  const transitions = useTransition(imagesArr[index], {
+    key: null,
+    from: { opacity: 1, position: 'absolute', transform: 'translate3d(100%,0,0)' },
+    enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
+    leave: { opacity: 1, transform: 'translate3d(-50%,0,0)' },
+    config: {
+      duration: 550,
+    },
+  } as React.CSSProperties);
+
+  const [touchStart, setTouchStart] = React.useState(0);
+  const [touchEnd, setTouchEnd] = React.useState(0);
 
   useEffect(() => {
-    fetchData().then((response) => setData(() => response.recipes.map((recipe) => recipe.imgUrl)));
+    store.fetchData();
   }, []);
 
-  useEffect(() => {
-    setPages(
-      Children.map(data, (child) => cloneElement(child, {
-        style: {
-          height: '100%',
-          minWidth: '450px',
-          maxWidth: '450px',
-        },
-      })),
-    );
-  }, [data]);
+  const nextSlide = () => {
+    const next = index + 1 < imagesArr.length ? index + 1 : 0;
+    setIndex(next);
+  };
 
-  console.log(pages);
+  const prevSlide = () => {
+    const prev = index === 0 ? imagesArr.length - 1 : 0;
+    setIndex(prev);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => setTouchStart(e.targetTouches[0].clientX);
+
+  const handleTouchMove = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX);
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 150) {
+      nextSlide();
+    }
+
+    if (touchStart - touchEnd < -150) {
+      prevSlide();
+    }
+  };
 
   return (
-    <Box
-      className="main-container"
-    >
-      <Box className="all-pages-container">
-        {data?.map((img) => (
-          <img
-            src={img}
-            alt="img"
-            className="img"
-          />
-        ))}
-      </Box>
-    </Box>
+    <>
+      <Card sx={{
+        width: '100%',
+      }}
+      >
+        <Box sx={{
+          display: 'flex',
+        }}
+        >
+          <IconButton onClick={prevSlide}>
+            <ArrowBackIosNewIcon />
+          </IconButton>
+          <Box className="carousel">
+            {transitions((style, item) => (
+              <animated.img
+                className="carousel__item"
+                style={style}
+                src={item.imgUrl}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              />
+            ))}
+          </Box>
+          <IconButton onClick={nextSlide}>
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </Box>
+
+        <Count />
+      </Card>
+      <Buttons />
+    </>
   );
 };
+export default observer(Carousel);

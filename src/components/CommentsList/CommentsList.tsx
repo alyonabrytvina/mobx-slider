@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import { v4 as uuidv4 } from 'uuid';
 import { store } from '../../store/store';
 
-const Comments: React.FC = () => (
+const CommentsList: React.FC = () => (
   <List
     sx={{
       width: '100%',
@@ -23,4 +23,4 @@ const Comments: React.FC = () => (
   </List>
 );
 
-export default observer(Comments);
+export default observer(CommentsList);

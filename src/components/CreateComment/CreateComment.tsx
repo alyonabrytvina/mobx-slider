@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { store } from '../../store/store';
 
-const Form: React.FC = () => {
+const CreateComment: React.FC = () => {
   const [comment, setComment] = useState<string>('');
   const onAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
@@ -23,7 +23,6 @@ const Form: React.FC = () => {
       value={comment}
       sx={{
         '& .MuiOutlinedInput-root': { borderRadius: 10 },
-        mt: 2,
         borderRadius: '20%',
       }}
       placeholder="Write a comment"
@@ -34,4 +33,4 @@ const Form: React.FC = () => {
   );
 };
 
-export default observer(Form);
+export default observer(CreateComment);

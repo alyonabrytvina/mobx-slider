@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { Post } from './components/Post/Post';
 import { Buttons } from './components/Buttons/Buttons';
-import Form from './components/Form/Form';
-import Comments from './components/Comments/Comments';
+import Form from './components/CreateComment/CreateComment';
+import Comments from './components/CommentsList/CommentsList';
+import Carousel from './components/Carousel/Carousel';
 
 function App() {
   return (
@@ -12,11 +12,10 @@ function App() {
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'column',
-      width: '440px',
+      width: '360px',
     }}
     >
-      <Post />
-      <Buttons />
+      <Carousel />
       <Form />
       <Comments />
     </Box>

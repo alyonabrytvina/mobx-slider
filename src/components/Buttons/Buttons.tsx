@@ -5,13 +5,15 @@ import MessageIcon from '@mui/icons-material/Message';
 import { store } from '../../store/store';
 
 export const Buttons: React.FC = () => (
-  <Box sx={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  }}
+  <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+      margin: '10px 0',
+    }}
   >
     <IconButton onClick={store.postLikesInc}>
       <ThumbUpIcon sx={{
