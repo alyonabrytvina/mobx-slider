@@ -28,5 +28,8 @@ module.exports = {
     'no-plusplus': 'off',
     'lines-between-class-members': 'off',
     'no-unused-expressions': 'off',
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    'no-unused-vars': 'off',
   },
 };
